@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="./js/jquery-1.12.4.min.js"></script>
 </head>
 
 <body>
@@ -23,11 +24,41 @@
             <form class="login_form">
                 <i class="iconfont icon-user"></i>
                 <i class="iconfont icon-key"></i>
-                <input type="text" class="input_txt" placeholder="邮箱/手机号">
-                <input type="password" class="input_pass" placeholder="密码">
-                <input type="submit" class="input_sub" value="登 录">
+                <input type="text" id="uesrname" class="input_txt" placeholder="用户名">
+                <input type="password" id="password" class="input_pass" placeholder="密码">
+                <!-- submit有默认提交动作 把 submit换成button -->
+                <input type="button" id="btnLogin" class="input_sub" value="登 录">
             </form>
         </div>
-    </div> 
+    </div>
+
+
+    <script src="./js/util/config.js"></script>
+    <script src="./js/util/uesrUse.js"></script>
+    <script>
+        // 点击提交按钮 
+        // 获取文本内的值
+        // 请求ajax
+        $(`#btnLogin`).click(function() {
+            // 获取文本框中的值
+            var nameuesr = $('#uesrname').val().trim();
+            var password = $('#password').val().trim();
+            // 请求ajax 
+            // 用户登录功能
+            uesr.login(nameuesr, password).then(function(res) {
+                // console.log(res);
+                // 成功登录
+                if (res.code === 200) {
+                    // 跳转
+                    window.location.href = `./index.html`;
+                } //登录失败
+                else {
+                    alert(res.msg);
+                }
+
+            })
+        })
+    </script>
 </body>
+
 </html>
