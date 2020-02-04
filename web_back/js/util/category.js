@@ -13,6 +13,13 @@ var category = {
         return $.post(API.category_delete, {
             'id': id,
         })
+    },
+    edit: function(id, name, slug) {
+        return $.post(API.category_edit, {
+            'id': id,
+            'name': name,
+            'slug': slug,
+        })
     }
 
 }
