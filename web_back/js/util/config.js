@@ -29,6 +29,8 @@ var API = {
     article_delete: LOCALHOST + '/admin/article_delete',
     //新增
     article_add: LOCALHOST + '/admin/article_publish',
+    //编辑
+    article_edit: LOCALHOST + '/admin/article_edit',
 
 
 }
