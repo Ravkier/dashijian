@@ -31,7 +31,7 @@
         <div class="menu">
             <div class="menu_collapse fl">
                 <a href="javascript:;" class="level_one"><i class="fa fa-list-ul"></i>全部分类</a>
-                <ul class="level_two">
+                <ul class="level_two" id="level_two_menu">
                     <li class="up"></li>
                     <!-- <li><a href="#">最 新</a></li>
                     <li><a href="#">科 技</a></li>
@@ -41,7 +41,7 @@
                     <li><a href="#">公 司</a></li> -->
                 </ul>
             </div>
-            <ul class="left_menu fl">
+            <ul class="left_menu fl" id="left_menu">
                 <!-- <li><a href="#">最 新</a></li>
                 <li><a href="#">科 技</a></li>
                 <li><a href="#">股 市</a></li>
@@ -241,13 +241,21 @@
             {{/if}} {{/each}}
 
 
+    </script>
+    <script>
+        let id = window.location.search.substr(4);
+        // console.log(id);
 
+        category.get().then(res => {
+            res.curId = id;
 
+            let htmlStr = template('temp_get', res)
+            $('#left_menu').html(htmlStr);
 
-            <script>
-                let id = window.location.search.substr(4)
-                    // console.log(id);
-            </script>
+            $('#level_two_menu').append(htmlStr);
+
+        })
+    </script>
 
 
 
