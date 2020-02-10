@@ -6,12 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>大事件-列表页</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/jquery.pagination.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="js/jquery.pagination.min.js"></script>
 </head>
 
 <body>
@@ -31,23 +29,13 @@
         <div class="menu">
             <div class="menu_collapse fl">
                 <a href="javascript:;" class="level_one"><i class="fa fa-list-ul"></i>全部分类</a>
-                <ul class="level_two" id="level_two_menu">
+                <ul id="level_two_menu" class="level_two">
                     <li class="up"></li>
-                    <!-- <li><a href="#">最 新</a></li>
-                    <li><a href="#">科 技</a></li>
-                    <li><a href="#">股 市</a></li>
-                    <li><a href="#">商 品</a></li>
-                    <li><a href="#">外 汇</a></li>
-                    <li><a href="#">公 司</a></li> -->
+                   
                 </ul>
             </div>
-            <ul class="left_menu fl" id="left_menu">
-                <!-- <li><a href="#">最 新</a></li>
-                <li><a href="#">科 技</a></li>
-                <li><a href="#">股 市</a></li>
-                <li><a href="#">商 品</a></li>
-                <li><a href="#">外 汇</a></li>
-                <li><a href="#">公 司</a></li> -->
+            <ul id="left_menu" class="left_menu fl">
+                
             </ul>
             <ul class="right_menu fr">
                 <li><a href="#">科技专题</a></li>
@@ -60,106 +48,22 @@
         <div class="left_con setfr">
 
             <div class="list_title">
-                <h3>科 技</h3>
+                <h3 id="cateName">科 技</h3>
             </div>
 
-            <div class="common_news_list">
-                <a href="#" class="list_pic"><img src="images/pic09.jpg" alt=""></a>
-                <h4><a href="#">亚马逊金融试水中国？背后却是和华尔街的“金融战争” </a></h4>
-                <p>亚马逊抛弃了中国的买家们，却难以割舍庞大的卖家市场，有消息指出亚马逊中国将针对中国庞大的卖家群体推出一项贷款推荐计划。在连续对印度、墨西哥等新兴市场大力推广线上支付服务后，亚马逊金融试水进军中国市场的信号终于被放出。
-                </p>
-                <div class="new_info">
-                    <span>标签：财经&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( 5
-                        )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( 10 )</span>
-                    <b>发布于 2018-08-30 12:18:58</b>
-                </div>
+            <div id="list">
+                <!-- 用来显示文章列表的容器 -->
             </div>
-
-            <div class="common_news_list">
-                <a href="#" class="list_pic"><img src="images/pic03.jpg" alt=""></a>
-                <h4><a href="#">马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱,马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱</a></h4>
-                <p>亚马逊抛弃了中国的买家们，却难以割舍庞大的卖家市场，有消息指出亚马逊中国将针对中国庞大的卖家群体推出一项贷款推荐计划。在连续对印度、墨西哥等新兴市场大力推广线上支付服务后，亚马逊金融试水进军中国市场的信号终于被放出。
-                </p>
-                <div class="new_info">
-                    <span>标签：财经&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( 5
-                        )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( 10 )</span>
-                    <b>发布于 2018-08-30 12:18:58</b>
-                </div>
-            </div>
-
-            <div class="common_news_list">
-                <a href="#" class="list_pic"><img src="images/pic05.jpg" alt=""></a>
-                <h4><a href="#">马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱</a></h4>
-                <p>亚马逊抛弃了中国的买家们，却难以割舍庞大的卖家市场，有消息指出亚马逊中国将针对中国庞大的卖家群体推出一项贷款推荐计划。在连续对印度、墨西哥等新兴市场大力推广线上支付服务后，亚马逊金融试水进军中国市场的信号终于被放出。
-                </p>
-                <div class="new_info">
-                    <span>标签：财经&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( 5
-                        )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( 10 )</span>
-                    <b>发布于 2018-08-30 12:18:58</b>
-                </div>
-            </div>
-
-            <div class="common_news_list">
-                <a href="#" class="list_pic"><img src="images/pic07.jpg" alt=""></a>
-                <h4><a href="#">马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱</a></h4>
-                <p>亚马逊抛弃了中国的买家们，却难以割舍庞大的卖家市场，有消息指出亚马逊中国将针对中国庞大的卖家群体推出一项贷款推荐计划。在连续对印度、墨西哥等新兴市场大力推广线上支付服务后，亚马逊金融试水进军中国市场的信号终于被放出。
-                </p>
-                <div class="new_info">
-                    <span>标签：财经&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( 5
-                        )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( 10 )</span>
-                    <b>发布于 2018-08-30 12:18:58</b>
-                </div>
-            </div>
-
-            <div class="common_news_list">
-                <a href="#" class="list_pic"><img src="images/pic10.jpg" alt=""></a>
-                <h4><a href="#">马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱</a></h4>
-                <p>亚马逊抛弃了中国的买家们，却难以割舍庞大的卖家市场，有消息指出亚马逊中国将针对中国庞大的卖家群体推出一项贷款推荐计划。在连续对印度、墨西哥等新兴市场大力推广线上支付服务后，亚马逊金融试水进军中国市场的信号终于被放出。
-                </p>
-                <div class="new_info">
-                    <span>标签：财经&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( 5
-                        )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( 10 )</span>
-                    <b>发布于 2018-08-30 12:18:58</b>
-                </div>
-            </div>
-
-            <div class="common_news_list">
-                <a href="#" class="list_pic"><img src="images/pic04.jpg" alt=""></a>
-                <h4><a href="#">马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱</a></h4>
-                <p>亚马逊抛弃了中国的买家们，却难以割舍庞大的卖家市场，有消息指出亚马逊中国将针对中国庞大的卖家群体推出一项贷款推荐计划。在连续对印度、墨西哥等新兴市场大力推广线上支付服务后，亚马逊金融试水进军中国市场的信号终于被放出。
-                </p>
-                <div class="new_info">
-                    <span>标签：财经&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( 5
-                        )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( 10 )</span>
-                    <b>发布于 2018-08-30 12:18:58</b>
-                </div>
-            </div>
-
-            <div id="pagination" class="page"></div>
-            <script>
-                $(function() {
-                    $("#pagination").pagination({
-                        currentPage: 2,
-                        totalPage: 8,
-                        callback: function(current) {
-                            alert('ok!');
-                        }
-                    });
-                });
-            </script>
+            <!-- 分页 -->
+            <ul id="pagination" class="pagination-sm"></ul>
+            
 
         </div>
         <div class="right_con setfl">
             <div class="common_wrap">
                 <h3><i class="fa fa-bar-chart"></i> 一周热门排行</h3>
-                <ul class="content_list">
-                    <li><span class="first">1</span><a href="#">神奇的水滴摄影，泡泡中的世界泡泡中的世界</a></li>
-                    <li><span class="second">2</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span class="third">3</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span>4</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span>5</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span>6</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
-                    <li><span>7</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
+                <ul id="rank" class="content_list">
+                    
                 </ul>
             </div>
             <div class="common_wrap">
@@ -220,45 +124,151 @@
             <span>|</span>
             <a href="#">招聘人才</a>
             <span>|</span>
-            <a href="#">友情链接</a>
+            <a href="#">友情链接</a>		
         </div>
-        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司 All Rights Reserved</p>
-        <p>电话：0755-****888 粤ICP备*******8号</p>
+        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司   All Rights Reserved</p>
+        <p>电话：0755-****888    粤ICP备*******8号</p>
     </div>
 
-
-
+</body>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/jquery.twbsPagination.js"></script>
+    <script src="./js/template-web.js"></script>
     <script src="./js/util/config.js"></script>
     <script src="./js/util/category.js"></script>
-    <script src="./js/template-web.js"></script>
-
-
-    <script type="text/html" id="temp_get">
-
-        {{each data item}} {{if item.id == curId}}
-        <li class="cur"><a href="./list.html?id={{item.id}}">{{item.name}}</a> {{else}}
-            <li><a href="./list.html?id={{item.id}}">{{item.name}}</a> </li>
-            {{/if}} {{/each}}
-
-
+    <script src="./js/util/article.js"></script>
+    <!-- 引入懒加载js文件 -->
+    <script src="./js/lazyload.js"></script>
+    <!-- 1.文章列表获取以及高亮显示当前类别 
+    把当前列表中对应的文章编号高亮显示
+    如果id=1，则科学栏目是处于选中高亮状态
+    -->
+    <script id="cate" type="text/html">
+    {{each data item}}
+        <!-- 这里调用下面补充的属性res.id（当前类别编号）方法，点击时获取哪个id值，就给它添加高亮类名 -->
+        {{if item.id == curId}}
+            <li class="cur"><a href="./list.html?id={{item.id}}">{{item.name}}</a></li>
+        {{else}}
+            <li><a href="./list.html?id={{item.id}}">{{item.name}}</a></li>
+        {{/if}}
+    {{/each}}
     </script>
+    <!-- 2.实现列表页内容的显示 -->
+    <script id="tmpNews" type="text/html">
+        {{each data item}}
+            <div class="common_news_list">
+                    <a href="./article.html?id={{item.id}}" class="list_pic">
+                        <img class="img" data-src="{{item.cover}}" src="./images/loading.png" alt=""></a>
+                    <h4><a href="./article.html?id={{item.id}}">{{item.title}}</a></h4>
+                    <p>{{item.content}}</p>
+                    <div class="new_info">
+                        <span>标签：{{item.type}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{item.read}}
+                            )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{item.comment}} )</span>
+                        <b>发布于 {{item.date}}</b>
+                    </div>
+            </div>
+        {{/each}}
+    </script>
+    <!-- 3.一周热门排行榜 -->
+    <!-- 注意：前三个有自己的class样式 -->
+    <script id="tmpRank" type="text/html">
+        {{each data item idx}}
+            {{if idx == 0}}
+                <li><span class="first">{{idx+1}}</span><a href="./article.html?id={{item.id}}">{{item.title}}</a></li>
+            {{else if idx == 1}}
+                <li><span class="second">{{idx+1}}</span><a href="./article.html?id={{item.id}}">{{item.title}}</a></li>
+            {{else if idx == 2}}
+                <li><span class="third">{{idx+1}}</span><a href="./article.html?id={{item.id}}">{{item.title}}</a></li>
+            {{else}}
+                <li><span>{{idx+1}}</span><a href="./article.html?id={{item.id}}">{{item.title}}</a></li>
+            {{/if}}
+        {{/each}}
+    </script>
+    
     <script>
-        let id = window.location.search.substr(4);
-        // console.log(id);
+        getAndShow=() => {
 
-        category.get().then(res => {
-            res.curId = id;
+        article.getList(id,curPage).then(res => {
+        // console.log(res);
+        // 2.3 res.pages表示当前查询条件得到的数据的总页数
 
-            let htmlStr = template('temp_get', res)
-            $('#left_menu').html(htmlStr);
-
-            $('#level_two_menu').append(htmlStr);
-
+        //2.4 数据渲染-模板引擎
+        let htmlStr = template('tmpNews',res)
+        console.log(htmlStr);
+        $('#list').html(htmlStr) 
+        // 启动懒加载
+        $('.img').lazyload()
+        // 2.5 优化：如果只有一页，则不需要显示分页条
+        if(res.pages <=1){
+        return
+        }
+        // 2.6 分页插件的基础代码
+        $('#pagination').twbsPagination({
+        initiateStartPageClick:false, //插件初始化时不要触发第一次click事件
+        totalPages: res.pages, //总页数
+        visiblePages: 6, //可见页数的按钮数量
+        first:'首页',
+        prev:'上一页',
+        next:'下一页',
+        last:'尾页',
+        onPageClick:function(event,page) {
+            // 2.7 page是当前用户点击的页码
+            // 点击后更新全局变量，重新查询
+            // alert(page);
+            curPage = page
+            //2.8 再次调用方法
+            getAndShow();
+        }
+        });
         })
+
+        }
+
+        // 1.文章列表获取以及高亮显示当前类别
+        // 1.2从地址栏中获取id值
+        let id = window.location.search.substr(4)
+        // 1.3显示导航菜单，并把当前文章的类别高亮显示
+        // 获取文章的类型并显示
+        category.get().then( res => {
+            // 实现高亮，这里需要补一个值
+            // 补充的这个属性用来保存当前的类别编号，方便在上面模板引擎内部来获取这个编号，用以添加高亮类名
+            res.curId = id
+            // console.log(res);
+            //渲染结构
+            let htmlStr = template('cate',res)
+            //替换整个容器中的html
+            $('#left_menu').html(htmlStr)
+            // 追加一些内容
+            $('#level_two_menu').append(htmlStr)
+            // 与当前id进行比较，找到当前要显示在页面上的栏目标题
+            res.data.forEach(item => {
+                let {id,name} = item
+                if(id == id){
+                    $('#cateName').html(name)
+                }
+            })
+        })
+
+        // 2.实现列表页内容的显示
+        // 2.1 根据当前类型id取出文章信息并渲染，这里有分页
+        let curPage = 1; //2.2设置一个全局变量：当前要取回来第几页的文章，方便下面分页的调用
+        getAndShow();
+        
+        
+        // 3.列表页，热门排行 id就是当前类别的编号，传入即可
+        article.getRank(id).then(res => {
+            // console.log(res);
+            let {code,msg} = res
+            if (code === 200) {
+                // 渲染到页面中
+                let htmlStr = template('tmpRank',res)
+                $('#rank').html(htmlStr)
+            }
+            else{
+                alert(msg)
+            }
+        })
+        
+
     </script>
-
-
-
-</body>
-
 </html>

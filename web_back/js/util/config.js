@@ -1,36 +1,43 @@
-// 显示出基地址
-// var LOCALHOST = 'http://192.168.172.65:8000';
+// 配置文件
+// 把这个项目中所有用到的接口地址全部存在这里
 
-var LOCALHOST = 'http://192.168.1.111:8000'
-
-// 各个接口
-var API = {
-    // 登录
-    Login: LOCALHOST + '/admin/login',
-    // 退出
-    Logout: LOCALHOST + '/admin/logout',
-    // 显示
-    Getuser: LOCALHOST + '/admin/getuser',
-
-    // 文章类别
-    // 显示
-    category_search: LOCALHOST + '/admin/category_search',
-    // 添加
-    category_add: LOCALHOST + '/admin/category_add',
-    // 删除
-    category_delete: LOCALHOST + '/admin/category_delete',
-    // 编辑
-    category_edit: LOCALHOST + '/admin/category_edit',
-
-    // 文章列表
-    // 显示
-    article_search: LOCALHOST + '/admin/search',
-    // 删除
-    article_delete: LOCALHOST + '/admin/article_delete',
-    //新增
-    article_add: LOCALHOST + '/admin/article_publish',
-    //编辑
-    article_edit: LOCALHOST + '/admin/article_edit',
+//所有接口的基地址
+// 1.自己的地址
+// var BASEURL = 'http://192.168.5.5:8000' 
+// 2.如果当前服务就就是在自己的电脑上，就可以直接写成localhost
+const BASEURL = 'http://localhost:8000' 
+// 3.老师买的地址，只有在老师运行后端时可用
+// var BASEURL = 'http://39.99.130.17:8000' 
 
 
+// 用来保存所有的接口信息
+const APILIST = {
+    // 一、用户模块
+    
+    user_login: BASEURL + '/admin/login',
+    user_logout: BASEURL + '/admin/logout',
+    user_getUser: BASEURL + '/admin/getuser',
+
+    // 二、文章类别管理模块
+    // 1.获取文章类别分类
+    category_get: BASEURL + '/admin/category_search',
+    // 2.添加文章类别分类
+    category_add: BASEURL + '/admin/category_add',
+    // 3.删除文章类别分类
+    category_del: BASEURL + '/admin/category_delete',
+    // 4.编辑文章类别分类
+    category_edit: BASEURL + '/admin/category_edit',
+
+    // 三、文章列表模块
+    // 1.文章搜索
+    article_get: BASEURL + '/admin/search',
+    // 2.文章删除
+    article_del: BASEURL + '/admin/article_delete',
+    // 3.添加文章
+    article_add: BASEURL + '/admin/article_publish',
+    // 4.保存文章的修改
+    article_edit: BASEURL + '/admin/article_edit',
+
+
+    
 }

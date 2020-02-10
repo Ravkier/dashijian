@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script src="./js/jquery-1.12.4.min.js"></script>
 </head>
 
 <body>
@@ -24,41 +23,48 @@
             <form class="login_form">
                 <i class="iconfont icon-user"></i>
                 <i class="iconfont icon-key"></i>
-                <input type="text" id="uesrname" class="input_txt" placeholder="用户名">
-                <input type="password" id="password" class="input_pass" placeholder="密码">
-                <!-- submit有默认提交动作 把 submit换成button -->
-                <input type="button" id="btnLogin" class="input_sub" value="登 录">
+                <input id="username" type="text" class="input_txt" placeholder="用户名">
+                <input id="password" type="password" class="input_pass" placeholder="密码">
+                <!-- 注意：！！！ -->
+                <!-- 如果submit按钮在表单中，默认会有一个提交的动作 -->
+                <!-- 我们把submit改为button即可，就不会有提交表单的效果了 -->
+                <input id="btn" type="button" class="input_sub" value="登 录">
             </form>
         </div>
     </div>
-
-
-    <script src="./js/util/config.js"></script>
-    <script src="./js/util/uesrUse.js"></script>
-    <script>
-        // 点击提交按钮 
-        // 获取文本内的值
-        // 请求ajax
-        $(`#btnLogin`).click(function() {
-            // 获取文本框中的值
-            var nameuesr = $('#uesrname').val().trim();
-            var password = $('#password').val().trim();
-            // 请求ajax 
-            // 用户登录功能
-            uesr.login(nameuesr, password).then(function(res) {
-                // console.log(res);
-                // 成功登录
-                if (res.code === 200) {
-                    // 跳转
-                    window.location.href = `./index.html`;
-                } //登录失败
-                else {
-                    alert(res.msg);
-                }
-
-            })
-        })
-    </script>
 </body>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<!-- 注意，这里要先引入config文件 -->
+<script src="./js/util/config.js"></script>
+<script src="./js/util/user.js"></script>
+<script>
+    // 一、用户登录功能
+    // 思路：
+    // 1.给按钮添加点击事件
+    // 2.点击后收集用户信息，并判断是否有效
+    // 3.请求ajax接口，根据接口反馈继续下一步
+    $('#btn').click( () => {
+        let name = $('#username').val().trim();
+        let psd = $('#password').val().trim();
+        if (name.length === 0 || psd.length === 0) {
+            alert('不能为空')
+            //记得加return，为空直接停止函数，节省内存
+            return
+        }
+        // 优化：语义化函数，用户登录
+        user.login(name, psd).then( res => {
+            // console.log(res);
+            //解构赋值优化
+            let {code,msg} = res
+            if (code === 200) {
+                // alert('登陆成功')
+                window.location.href = './index.html'
+            }
+            else {
+                alert(msg)
+            }
+        });
+    })
+</script>
 
 </html>

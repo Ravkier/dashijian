@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>大事件-后台登录页</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+
+<body>
+    <div class="main_wrap">
+        <div class="header">
+            <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
+            <div class="copyright">CopyRight © 2019 深圳百秀信息技术股份有限公司<br>All Rights Reserved</div>
+        </div>
+
+        <div class="login_form_con">
+            <div class="login_title"></div>
+            <form class="login_form">
+                <i class="iconfont icon-user"></i>
+                <i class="iconfont icon-key"></i>
+                <input id="username" type="text" class="input_txt" placeholder="用户名">
+                <input id="password" type="password" class="input_pass" placeholder="密码">
+                <!-- 注意：！！！ -->
+                <!-- 如果submit按钮在表单中，默认会有一个提交的动作 -->
+                <!-- 我们把submit改为button即可，就不会有提交表单的效果了 -->
+                <input id="btn" type="button" class="input_sub" value="登 录">
+            </form>
+        </div>
+    </div>
+</body>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script>
+    // 封装
+    // function user_login() {
+
+    // }
+    // 一、用户登录功能
+    // 思路：
+    // 1.给按钮添加点击事件
+    // 2.点击后收集用户信息，并判断是否有效
+    // 3.请求ajax接口，根据接口反馈继续下一步
+    $('#btn').click( () => {
+        let name = $('#username').val().trim();
+        let psd = $('#password').val().trim();
+        if (name.length === 0 || psd.length === 0) {
+            alert('不能为空')
+            //记得加return，为空直接停止函数，节省内存
+            return
+        }
+        // $.post(url,数据).then(回调函数)
+        $.post('http://192.168.172.82:8000/admin/login', {
+            'user_name': name,
+            'password': psd
+        }).then( res => {
+            // console.log(res);
+            let {code,msg} = res
+            if (code === 200) {
+                // alert('登陆成功')
+                window.location.href = './index.html'
+            }
+            else {
+                alert(msg)
+            }
+
+        })
+
+    })
+
+
+</script>
+
+</html>

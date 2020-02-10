@@ -13,7 +13,9 @@
     <link type="text/css" rel="stylesheet" href="js/jedate/css/jedate.css">
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/jedate/js/jedate.js"></script>
+    <!-- 引入富文本编辑器 -->
     <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
+    <!-- 引入富文本框的配置文件 -->
     <script src="js/tinymce/js/tinymce_setup.js"></script>
 </head>
 
@@ -23,24 +25,25 @@
             写文章
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form" id="article_form">
+            <form id="myform" class="form-horizontal article_form">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" name="title" class="form-control" id="inputEmail3" placeholder="文章标题">
+                        <input name="title" type="email" class="form-control" id="inputEmail3" placeholder="文章标题">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <input type="file" name="cover" id="cover">
-                        <img id="imgPreview" style="margin-left:20px;width: 200px;" src="../web_back/images/login_bg.jpg" alt="">
+                        <input name="cover" type="file" id="cover">
                     </div>
+                    <!-- 这里补充了一个用作预览功能的img标签 -->
+                    <img id="imgPreview" src="../web_back/images/2.jpg" style="width:200px;height:150px;border: 1px solid #ccc; margin-left: 15px; padding: 3px;" alt="">
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" name="type" id="select">
+                        <select id="selCategory" name="type" class="form-control">
                             <!-- <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -54,7 +57,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" name="data" placeholder="YYYY-MM-DD" id="dateinput">
+                            <input type="text" name="date" class="form-control" placeholder="YYYY-MM-DD" id="dateinput">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -67,13 +70,13 @@
                     <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" id="rich_content" name="content" placeholder="文章内容">
-                            
+                           请输入文章内容
                             </textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="button" class="btn btn-success" id="btnAdd">发布</button>
+                        <button id="btnAdd" type="button" class="btn btn-success">发布</button>
                         <button type="button" class="btn btn-default">存为草稿</button>
                     </div>
                 </div>
@@ -81,70 +84,87 @@
         </div>
     </div>
 
+</body>
     <script src="./js/util/config.js"></script>
     <script src="./js/util/article.js"></script>
     <script src="./js/util/category.js"></script>
     <script src="./js/template-web.js"></script>
-
-
-
-    <script id="tmp" type="text/html">
-        <option value="">所有类型</option>
+    <script id="tmp" type="text/html"> 
         {{each data item}}
-        <option value={{item.id}}>{{item.name}}</option>
+            <option value="{{item.id}}">
+                {{item.name}}
+
+            </option>
         {{/each}}
-
-    </script>
-
+    </script> 
     <script>
-        // 新增
-        $('#btnAdd').click(function() {
-            var fd = new FormData(document.getElementById('article_form'))
-
-            fd.append('state', '已发布');
-
-            fd.set('content', tinyMCE.activeEditor.getContent())
-
-            article.add(fd).then(function(res) {
-                if (res.code == 201) {
-                    alert('添加成功');
-                    $('#article_form')[0].reset();
-                } else {
-                    alert(res.msg)
+        //1.发布文章
+        // 思路：
+        // 找到btnAdd按钮，添加点击事件
+        // 1.1收集到用户信息，简单判断
+        // 1.2调用接口，实现添加，根据反馈，做后续事件
+        $('#btnAdd').click( () => {
+            // alert(1)
+            // 获取表单中用户填入的信息 form中必须有name属性，而且必须与接口中需要的参数保持一致
+            let fd = new FormData (document.getElementById('myform'))
+            // 手动添加一个参数
+            fd.append('state','已发布')
+            //获取富文本框中的内容，固定写法
+            fd.set('content',tinyMCE.activeEditor.getContent())
+            article.add(fd).then( res => {
+                console.log(res);
+                let {code,msg} = res
+                if (code === 201) {
+                    alert('发布成功')
+                    // reset是表单(dom对象)的方法，用来重置表单内容
+                    $('#myform')[0].reset();
+                }
+                else{
+                    alert(msg)
                 }
             })
-        });
-
-
-        // 显示文章类型
-        category.get().then(function(res) {
-            if (res.code == 200) {
-                var htmlStr = template('tmp', res);
-                $('#select').html(htmlStr);
-            } else {
-                alert(res.msg)
+        })
+        
+        // 2.获取文章类别，并显示
+        category.get().then( res => {
+            console.log(res);
+            let {code,msg} = res
+            if (code === 200) {
+                let htmlStr = template('tmp',res)
+                $('#selCategory').html(htmlStr)
+            }
+            else{
+                alert(msg)
             }
         })
 
-        // 显示
-        $('#cover').change(function() {
-            // 获取文件的中的第一个元素
-            var coverFile = this.files[0];
-            if (coverFile) {
-                // 获取临时地址
-                var coverFileUrl = URL.createObjectURL(coverFile);
-
-                // 把临时的地址付给图片
-                $('#imgPreview').attr('src', coverFileUrl);
-            } else {
-                // 如果取消了就显示原图片
-                $('#imgPreview').attr('src', '../web_back/images/login_bg.jpg');
+        // 3.图片预览
+        $('#cover').change(function () {
+            // change用来监听用户在input上进行的操作
+            // this就是当前的dom元素
+            // console.log(this); 
+            // console.log(this.files); //当前用户所有选中的文件放在这里的集合中
+            // console.log(this.files[0]); //选中的第一个文件
+            
+            // 3.1.获取当前用户选中的那个文件
+            let curFile = this.files[0]
+            // 这里有bug，所以需要简单判断一下，如果获取的效果是true有效的，才执行后面的代码
+            if (curFile) {
+                // URL.createObjectURL(文件对象)是浏览器提供的一个方法，用于创建对象的 临时 链接地址
+                // 结果获取的是 blob:http://127.0.0.1:5500/2f161485-7e64-4064-a906-37af0ab30b23 临时的地址
+                let curFileUrl = URL.createObjectURL(curFile)
+                console.log(curFileUrl);
+    
+                // 3.2.将这个临时地址设置为imgPreview的src即可
+                $('#imgPreview').attr('src',curFileUrl)
+            }
+            else{
+                // 如果当前用户没有选中任何图片，则默认使用初始图片
+                $('#imgPreview').attr('src','../web_back/images/2.jpg')
             }
 
-
+            
         })
     </script>
-
-</body>
 
 </html>

@@ -23,24 +23,24 @@
             文章编辑
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form" id="MyForm">
+            <form id="form" class="form-horizontal article_form">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" name="title" class="form-control" id="inputEmail3" value="文章标题文字">
+                        <input type="text" class="form-control" id="title" name="title" value="文章标题文字">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <img src="images/pic06.jpg" id="imgUrl" class="article_cover">
-                        <input type="file" name="cover" id="exampleInputFile">
+                        <img src="images/pic06.jpg" id="previewImg" class="article_cover">
+                        <input type="file" id="exampleInputFile" name="cover">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" id="form" name="type">
+                        <select class="form-control" id="type" name="type">
                             <!-- <option>类别一</option>
                             <option>类别二</option>
                             <option>类别三</option>
@@ -54,7 +54,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" name="date" value="2019-05-17" id="dateinput">
+                            <input type="text" name="date" class="form-control" value="2019-05-17" id="dateinput">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -71,165 +71,117 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="button" id="btn" class="btn btn-success">修改</button>
+                        <!-- 必须把默认的submit改成button防止页面提交时的跳转 -->
+                        <button type="button" id="saveBtn" class="btn btn-success">修改</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
-
-    <script src="./js/util/config.js"></script>
-    <script src="./js/util/article.js"></script>
-    <script src="./js/util/category.js"></script>
-    <script src="./js/template-web.js"></script>
-
-    <script id="tmp" type="text/html">
-        {{each data item}}
-        <option value={{item.id}}>{{item.name}}</option>
-        {{/each}}
-    </script>
-
-
-
-
-    <script>
-        // 获取id
-        var id = window.location.search.substr(4);
-
-        getAndShowCategory();
-        // 显示在表单上
-        function getAndShow(id) {
-            article.getById(id).then(function(res) {
-                // console.log(res);
-                if (res.code == 200) {
-                    $('#inputEmail3').val(res.data.title)
-                    $('#imgUrl').attr('src', res.data.cover);
-                    $('#dateinput').val(res.data.date)
-
-                    $('#form').val(res.data.type)
-
-                    setTimeout(function() {
-                        tinymce.activeEditor.setContent(res.data.content)
-                    }, 2000)
-
-                } else {
-                    alert(res.msg)
-                }
-            })
-        }
-
-        // 显示类型
-        function getAndShowCategory() {
-            category.get().then(function(res) {
-                // console.log(res);
-                if (res.code === 200) {
-                    var htmlStr = template('tmp', res);
-                    console.log(htmlStr);
-
-                    $('#form').html(htmlStr);
-                    getAndShow(id);
-                } else {
-                    alert(res.msg)
-                }
-
-            })
-        };
-        // 编辑功能
-        $('#btn').click(function() {
-            var fd = new FormData(document.getElementById('MyForm'));
-            fd.set('content', tinyMCE.activeEditor.getContent());
-            fd.append('id', id)
-            article.edit(fd).then(function(res) {
-                // console.log(res);
-                if (res.code == 200) {
-                    alert(res.msg)
-                } else {
-                    alert(res.msg)
-                }
-
-            })
-
-
-        })
-    </script>
-
-
-
-
-
-
-
-    <!-- <script>
-        // 从地址栏中把id号拆出来
-        // BOM操作window.location.search获取？后面的字符串
-        var id = window.location.search.substr(4);
-
-        getAndShow();
-
-        // 显示在表单上
-        function getAndShowId(id) {
-            article.getById(id).then(function(res) {
-                // console.log(res);
-                if (res.code === 200) {
-                    $('#inputEmail3').val(res.data.title);
-                    $('#exampleInputFile').attr('src', res.data.cover);
-                    $('#dateinput').val(res.data.date);
-
-                    $('#form').val(res.data.type)
-
-                    // console.log(res.data.type);
-
-
-                    // 富文本框显示在上面
-                    setTimeout(function() {
-                        tinymce.activeEditor.setContent(res.data.content)
-
-                    }, 1000)
-
-
-
-                } else {
-                    alert(res.msg);
-                }
-            });
-        }
-        // 显示类型
-        function getAndShow() {
-            category.get().then(function(res) {
-                // console.log(res);
-
-                if (res.code == 200) {
-
-                    var htmlStr = template('tmp', res)
-                        // console.log(htmlStr);
-
-                    $('#form').html(htmlStr);
-
-                    getAndShowId(id);
-
-                } else {
-                    alert(res.msg)
-                }
-            })
-        };
-
-        //编辑保存
-
-        // $('#btn').click(function() {
-        //     var fd = new FormData(document.getElementById('MyForm'));
-        //     fd.set('content', tinyMCE.activeEditor.getContent());
-        //     article.edit(fd).then(function(res) {
-        //         console.log(res);
-
-        //     })
-        // })
-    </script> -->
-
-
-
-
-
 </body>
+<!-- 要用模板引擎，首先引入文件 -->
+<script src="./js/template-web.js"></script>
+<script src="./js/util/config.js"></script>
+<script src="./js/util/article.js"></script>
+<script src="./js/util/category.js"></script>
+<script id="cate" type="text/html">
+    <!-- 文章分类信息的模板 -->
+    {{each data item}}
+        <option value="{{item.id}}">{{item.name}}</option>
+    {{/each}}
+</script>
+<script>
+    // getAndShwoCategory()获取类别
+    // 由于把getAndShwoCategory改成了把箭头函数，所以必须把它放在整个代码的最前面，因为箭头函数本身是函数表达式的方式，它是没有这个函数提升的效果的
+    getAndShwoCategory=() => {
+        category.get().then( res => {
+            console.log(res);
+            let {code,msg} = res
+            if (code === 200) {
+                let htmlStr = template('cate',res)
+                console.log(htmlStr);
+                // 写入页面中的select
+                $('#type').html(htmlStr)
+                // 如何让下拉栏处于指定的文章类型？
+                // $('#type').val(3)即可
 
+                // 注意：在这里调用，为什么？
+                // 因为必须要在类别获取完成之后，再去获取并显示所有的文章详情
+                getAndShow(id)
+            }
+            else{
+                alert(msg)
+            }
+        })
+    }
+
+
+    // 1.实现文章的编辑功能
+    // 思路：先发ajax求类别，求到类别之后再发ajax求详情，所以定义了两个方法，所以求类别的getAndShowCategory()方法要在getAndShow()之前调用
+
+    // 1.2获取当前要编辑的文章的id
+    // 1.3window.location:是一个bom对象，保存浏览器当前页面的url信息，它是一个对象
+    // 1.4window.location.search:获取当前页面的url信息中的查询字符串的值---?id=1580917769336
+    // 1.5取到?id=1580917769336之后需要截取其中的id数值，用substr(起始下标，取出多长)方法，如果省略第二个参数就是取出从起点开始到结束的全部
+    // window.location.search.substr()
+
+    // 2根据id去取回这篇文章的信息，并显示在页面中
+    // 2.1这里的数值是从第四位开始的，所以直接从第四位开始将后面的全部截取
+    let id = window.location.search.substr(4)
+    // 调用显示标题、封面、数据、富文本框
+    // getAndShow(id)
+    // 调用显示类别
+    getAndShwoCategory()
+    // 2.2接下来要用接口获取信息
+    // 获取标题、封面、数据、富文本框内容
+    getAndShow=id => {
+        article.getById(id).then( res => {
+            console.log(res);
+            let {code,data,msg} = res
+            if (code === 200) {
+                // 把结果显示在页面上，填入到相应的表单上
+                $('#title').val(data.title)
+                $('#previewImg').attr('src',data.cover)
+                $('#dateinput').val(data.date)
+                // 类别
+                $('#type').val(data.type)
+                // 内容是给富文本编辑器设置内容，有固定写法
+                // 但是获取富文本框的内容有延迟，所有需要设置一个定时器
+                setTimeout ( () => {
+                    // tinymce.activeEditor.setContent生效的前提是富文本编辑器已经就绪了，如果说ajax数据回来了但是富文本框还未就绪，就会报错，所以需要延迟一秒的定时器来启动它
+                    tinymce.activeEditor.setContent(data.content)
+                },1000)
+                // 类型的获取思路：想要获取全部的类型，并显示在下拉列表中，可以使用模板引擎，获取后要把当前文章类型处于选中状态
+                // $('#type').val(res.data.title)
+            }
+            else{
+                alert(msg)
+            }
+        })
+        
+    }
+    
+    
+    
+    // 3.实现保存编辑
+    $('#saveBtn').click( () => {
+        // 做保存
+        // 收集数据
+        let fd = new FormData(document.getElementById('form'))
+        // 想要获取formdata中的数据，必须把name值跟ajax要获取的参数一一对应
+        // 追加id
+        fd.append('id',id)
+        fd.set('content',tinymce.activeEditor.getContent())
+        // 调接口
+        article.edit(fd).then( res => {
+            let {code,msg} = res
+            if (code === 200) {
+                alert('保存成功')
+            }
+            else{
+                alert(msg)
+            }
+        })
+    })
+</script>
 </html>

@@ -17,22 +17,28 @@
     <div class="sider">
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
-            <img src="images/2.jpg" class="userImg" alt="person">
+            <img class="userImg" src="images/2.jpg" alt="person">
             <span>欢迎&nbsp;&nbsp;<i id="userName">李思思</i></span>
             <b>管理员</b>
         </div>
         <div class="menu">
-            <div class="level01 active"><a href="main_count.html" target="main_frame"><i class="iconfont icon-yidiandiantubiao04"></i><span>首页</span></a></div>
+            <div class="level01 active"><a href="main_count.html" target="main_frame"><i
+                        class="iconfont icon-yidiandiantubiao04"></i><span>首页</span></a></div>
             <div class="level01"><a href="#"><i class="iconfont icon-icon-article"></i><span>文章管理</span><b
                         class="iconfont icon-arrowdownl"></b></a></div>
             <ul class="level02">
-                <li><a href="article_list.html" target="main_frame"><i class="iconfont icon-previewright"></i><span>文章列表</span></a></li>
-                <li><a href="article_release.html" target="main_frame"><i class="iconfont icon-previewright"></i><span>发表文章</span></a></li>
-                <li><a href="article_category.html" target="main_frame"><i class="iconfont icon-previewright"></i><span>文章类别管理</span></a></li>
+                <li><a href="article_list.html" target="main_frame"><i
+                            class="iconfont icon-previewright"></i><span>文章列表</span></a></li>
+                <li><a href="article_release.html" target="main_frame"><i
+                            class="iconfont icon-previewright"></i><span>发表文章</span></a></li>
+                <li><a href="article_category.html" target="main_frame"><i
+                            class="iconfont icon-previewright"></i><span>文章类别管理</span></a></li>
             </ul>
 
-            <div class="level01"><a href="comment_list.html" target="main_frame"><i class="iconfont icon-comment"></i><span>评论管理</span></a></div>
-            <div class="level01"><a href="user.html" target="main_frame"><i class="iconfont icon-user"></i><span>个人中心</span></a></div>
+            <div class="level01"><a href="comment_list.html" target="main_frame"><i
+                        class="iconfont icon-comment"></i><span>评论管理</span></a></div>
+            <div class="level01"><a href="user.html" target="main_frame"><i
+                        class="iconfont icon-user"></i><span>个人中心</span></a></div>
         </div>
     </div>
 
@@ -43,21 +49,24 @@
         </form>
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
-            <img src="images/2.jpg" class="userImg" alt="person">
-            <a href="javascript:;" id="userlogout"><i class="iconfont icon-tuichu"></i> 退出</a>
+            <img class="userImg" src="images/2.jpg" alt="person">
+            <!-- href="javascript:;"  作用是是阻止a标签跳转 -->
+            <a href="javascript:;" id="logout"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
 
     <div class="main" id="main_body">
-        <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0" scrolling="auto"></iframe>
+        <!-- 新知识 -->
+        <!-- iframe标签会创建另一个容器，容器中可以引入另一个独立的html文件 -->
+        <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0"
+            scrolling="auto"></iframe>
     </div>
-
 
 
     <script>
         var $level01 = $('.level01');
         var $subli = $('.level02 li')
-        $level01.click(function() {
+        $level01.click(function () {
             $level01.not($(this)).removeClass('active');
             $(this).addClass('active');
 
@@ -69,7 +78,7 @@
             }
         })
 
-        $subli.click(function() {
+        $subli.click(function () {
             $subli.not($(this)).removeClass('active');
             $(this).addClass('active');
 
@@ -82,15 +91,12 @@
         function resizeFrame() {
             var frame_w = $('#main_body').outerWidth();
             var frame_h = $('#main_body').outerHeight();
-            $('#main_frame').css({
-                'width': frame_w,
-                'height': frame_h
-            });
+            $('#main_frame').css({ 'width': frame_w, 'height': frame_h });
         }
 
         resizeFrame();
 
-        $(window).resize(function() {
+        $(window).resize(function () {
             resizeFrame();
         })
 
@@ -104,34 +110,44 @@
                 $('.level02').children().eq(n).addClass('active').siblings().removeClass('active');
             }
         }
+
     </script>
-
-
+    <!-- 注意，这里要先引入config文件 -->
     <script src="./js/util/config.js"></script>
-    <script src="./js/util/uesrUse.js"></script>
-
-
+    <script src="./js/util/user.js"></script>
     <script>
-        // 退出
-        $('#userlogout').click(function() {
-            uesr.logout().then(function(res) {
-                if (res.code === 200) {
-                    window.location.href = './login.html';
-                } else {
-                    alert(res.msg);
+        // 二、退出登录功能
+        // 思路：给退出按钮a注册点击事件
+        // 1.退出要请求退出接口
+        $('#logout').click( () => {
+            // 用户退出
+            user.logout().then( res => {
+                // console.log(res);
+                //解构赋值优化
+                let {code,msg} = res
+                if (code === 200) {
+                    alert('安全退出成功')
+                    window.location.href = './login.html'
                 }
-            });
+                else {
+                    alert(msg)
+                }
+            })
+            return
         })
-
-        // 显示管理员信息
-        uesr.show().then(function(res) {
-            if (res.code === 200) {
-                $('#userName').text(res.data.nickname);
-                $('.userImg').attr('src', res.data.user_pic)
+        // 三、进入页面之后从接口获取个人信息
+        user.getUser().then( res => {
+            // console.log(res);
+            let {code,data} = res
+            if (code === 200) {
+                let {nickname,user_pic} = data
+                $('#userName').text(nickname)
+                $('.userImg').attr('src',user_pic)
             }
-        });
+            return
+        }
+        )
     </script>
-
 </body>
 
-</html
+</html>

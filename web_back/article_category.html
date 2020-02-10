@@ -28,15 +28,14 @@
                         <th class="text-center" width="100">操作</th>
                     </tr>
                 </thead>
-                <tbody id="tbody_show">
-
-
+                <tbody id="tb">
                     <!-- <tr>
-                        <td>爱旅行</td>
-                        <td>travel</td>
+                        <td>未分类</td>
+                        <td>uncategorized</td>
                         <td class="text-center">
-                            <a href="javascript:editTr({&quot;id&quot;:&quot;4&quot;,&quot;slug&quot;:&quot;travel&quot;,&quot;name&quot;:&quot;爱旅行&quot;});" class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 4 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
+                                class="btn btn-info btn-xs">编辑</a>
+                            <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
                         </td>
                     </tr> -->
                 </tbody>
@@ -50,8 +49,7 @@
             </table>
         </div>
     </div>
-
-    <!-- 新增的模态框 -->
+    <!-- 用来做添加的模态框 -->
     <div class="modal fade" id="addModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -78,7 +76,7 @@
             </div>
         </div>
     </div>
-    <!-- 编辑的模态框 -->
+<!-- 新增一个用来做编辑的模态框 -->
     <div class="modal fade" id="editModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -88,10 +86,8 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="form-group">
-                            <label for="edit_id" class="control-label">分类编号:</label>
-                            <input type="hidden" class="form-control" id="edit_id">
-                        </div>
+                            <!-- hidden的好处在于，页面不可见，但是支持dom操作 -->
+                            <input type="hidden" class="form-control" id="edit_id"> 
                         <div class="form-group">
                             <label for="edit_name" class="control-label">分类名称:</label>
                             <input type="text" class="form-control" id="edit_name">
@@ -103,7 +99,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="model_shutoff_edit">关闭</button>
+                    <button type="button" class="btn btn-default" id="model_shutoff">关闭</button>
                     <button type="button" class="btn btn-primary" id="model_save">保存</button>
                 </div>
             </div>
@@ -131,134 +127,161 @@
         //         $('#addModal .modal-title').html('修改分类名称');
         //         $('#addModal').modal('show');
         //     }
-        // })
+        // })      
     </script>
-
+    <!-- 必须引入config基础接口js文件 -->
     <script src="./js/util/config.js"></script>
     <script src="./js/util/category.js"></script>
+    <!-- 渲染的第一步，引入模板引擎的js文件 -->
     <script src="./js/template-web.js"></script>
-
-    <!-- 模板引擎 -->
-    <script id="tmp_cate" type="text/html">
+    <script id="tmp_cate" type="html/text">
         {{each data item}}
-
         <tr>
             <td>{{item.name}}</td>
             <td>{{item.slug}}</td>
             <td class="text-center">
-                <a href="javascript:;" data-index={{item.id}} data-name={{item.name}} data-slug={{item.slug}} class="btn btn-info btn-xs edit">编辑</a>
-                <a href="javascript:deleteTr( 3 );" class="btn btn-danger btn-xs del" data-index={{item.id}}>删除</a>
+                <a href="javascript:;" data-id="{{item.id}}" data-name="{{item.name}}" data-slug="{{item.slug}}" class="btn btn-info btn-xs edit">编辑</a>
+                <a href="javascript:;" data-id="{{item.id}}" class="btn btn-danger btn-xs del">删除</a>
             </td>
         </tr>
-
-
         {{/each}}
-
     </script>
-
     <script>
-        // 显示文章
-
-
-        categoryShow();
-
-        function categoryShow() {
-            category.get().then(function(res) {
-                // console.log(res);
-
-                var htmlStr = template('tmp_cate', res)
-
-                $('#tbody_show').html(htmlStr);
-
-            });
+        // 一、添加功能
+        // 1.用ajax从接口中取出数据，然后显示在表格里面
+        // 1.1什么时候获取文章类别分类的接口呢？在页面一刷新的时候
+        // 1.2这里直接用get.then方法
+        // $.get(category_get).then(function(res){
+        //     console.log(res);
+        // })
+        getAndShow();
+        function getAndShow(){
+            category.get().then( res => {
+            console.log(res);
+            // 2.渲染数据
+            // 2.1这里我们用模板引擎
+            // template固定写法
+            let htmlStr = template('tmp_cate',res)
+            console.log(htmlStr);
+            //把html结构显示在tb中
+            $('#tb').html(htmlStr)
+        })
         }
 
-        // 新增文章
+        // 2.添加功能
+        // 这里用到了bootstrap的模态框，会在页面中弹出一个对话框来
+        // 2.1点击添加按钮，收集用户信息，简单判断
+        // 2.2发请求，根据反馈后续操作
+        $('#model_add').click( () => {
+            var name = $('#name').val().trim()
+            var slug = $('#slug').val().trim()
 
-        $('#model_add').click(function() {
-            var name = $('#name').val().trim();
-            var slug = $('#slug').val().trim();
-
-            if (name.length == 0 || slug.length == 0) {
-                alert('输入不能为空');
-                return;
-            }
-            category.add(name, slug).then(function(res) {
-                if (res.code == 200) {
-                    $('#name').val('');
-                    $('#slug').val('');
-                    $('#addModal').modal('hide');
-
-                    // 显示
-                    categoryShow();
-                } else {
-                    alert(res.msg)
-                    return;
-                }
-            })
-        });
-        // 点击模态框关闭时 关闭
-        $('#model_shutoff').click(function() {
-            $('#addModal').modal('hide');
-        });
-        $('#model_shutoff_edit').click(function() {
-            $('#editModal').modal('hide');
-        });
-        // 删除功能
-
-        $('#tbody_show').on('click', '.del', function() {
-            var id = $(this).attr("data-index");
-            // 发送请求
-            category.del(id).then(function(res) {
-                if (res.code == 200) {
-                    categoryShow();
-                } else {
-                    alert(res.msg);
-                }
-            })
-
-        });
-
-        // 编辑功能
-        // 显示模态框
-        $('#tbody_show').on('click', '.edit', function() {
-            // 获取名称 别名
-            var id = $(this).attr("data-index");
-            var name = $(this).attr("data-name");
-            var slug = $(this).attr("data-slug");
-
-            // 显示模态框
-            $('#editModal').modal('show');
-            $('#edit_id').val(id)
-            $('#edit_name').val(name);
-            $('#edit_slug').val(slug);
-        });
-        // 保存
-        $('#model_save').click(function() {
-            var id = $('#edit_id').val().trim();
-            var new_name = $('#edit_name').val().trim();
-            var new_slug = $('#edit_slug').val().trim();
-            // console.log(new_name, new_slug);
-
-
-            if (new_name.length == 0 || new_slug.length == 0) {
-                alert('不能为空');
+            if(name.length===0||slug.length===0){
+                alert('不能为空')
                 return
             }
+            console.log(name,slug);
 
-            // 发送请求
-            category.edit(id, new_name, new_slug).then(function(res) {
-                if (res.code == 200) {
-                    $('#editModal').modal('hide');
-                    categoryShow();
-                } else {
-                    alert(res.msg);
+            // 发请求，调用添加方法
+            category.add(name,slug).then( res => {
+                console.log(res);
+                let {code,msg} = res
+                if (code===200) {
+                    // 添加成功
+                    // 1.清空用户输入
+                    $('#name').val('')
+                    $('#slug').val('')
+                    // 2.隐藏模态框
+                    $('#addModal').modal('hide');
+                    // 3.重新获取新数据
+                    getAndShow();
+                }
+                else {
+                    alert(msg)
                 }
             })
+            
+        })
 
-        });
+        // 3.关闭时隐藏模态框，给关闭按钮注册点击事件
+        $('#model_shutoff').click(function(){
+            // 点击关闭隐藏模态框
+            $('#addModal').modal('hide')
+        })
+        //添加功能完成
+
+        // 二、删除功能
+        // 思路：删除添加点击事件，事件委托添加
+        // 1.获取id
+        $('#tb').on('click','.del',function(){
+            // alert('1')
+            // 想要获取这个id，必须生成按钮时先设置自定义属性，然后再在这儿获取data-id
+            let id = $(this).attr('data-id')
+            // 2.请求ajax接口，根据反馈做后续动作
+            category.del(id).then( res => {
+                console.log(res);
+                let {code,msg} = res
+                if (code === 200) {
+                    // 删除成功
+                    getAndShow();
+                }
+                //删除不成功
+                else {
+                    alert(msg)
+                }
+            })
+        })
+        
+        // 三、编辑功能
+        // 思路：
+        // 1.用事件委托（委托给tbody）给编辑按钮添加点击事件
+        // 2.弹出模态框，并显示当前要编辑的内容
+        // 3. 用户修改后，点击保存，发请求，做后续操作
+        $('#tb').on('click','.edit',function(){
+            // 1.弹出模态框前要 取出当前要编辑的内容，通过在设置模板引擎时我们设置的自定义属性来获取相应的值
+            let id = $(this).attr('data-id')
+            let name = $(this).attr('data-name')
+            let slug = $(this).attr('data-slug')
+            // 2.将取出的值赋给模态框相应的input框中
+            $('#edit_id').val(id)
+            $('#edit_name').val(name)
+            $('#edit_slug').val(slug)
+            // 3.点击编辑按钮，弹出模态框
+            $('#editModal').modal('show')
+        })
+        // 4.点击保存按钮，保存修改
+        $('#model_save').click( () => {
+            // 4.1点击后获取三个值
+            let id = $('#edit_id').val().trim()
+            let new_name = $('#edit_name').val().trim()
+            let new_slug = $('#edit_slug').val().trim()
+            // 4.2简单判断
+            if(new_name.length === 0 || new_slug.length === 0){
+                alert('不能为空')
+                return
+            }
+            // 5.发请求，找借口
+            // 这里需要找到对应的input的id值，但是原文没有，需要我们手写添加一个方便我们调用，但是添加了又不能让用户随意更改，所以添加后隐藏掉即可
+            else{
+                category.edit(id,new_name,new_slug).then( res => {
+                    // 5.1判断一下，code是200则代表成功
+                    let {code,msg} = res
+                    if(code === 200){
+                    // 5.2修改成功重新获取一下文章分类列表
+                    getAndShow()
+                    // 5.3并且隐藏掉模态框
+                    $('#editModal').modal('hide')
+                    }
+                    // 5.4不成功则弹窗提示
+                    else{
+                        alert(msg)
+                    }
+                   
+                    
+                })
+            }
+        })
     </script>
-
 </body>
 
 </html>
